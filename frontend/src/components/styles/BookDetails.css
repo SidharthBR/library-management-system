@@ -1,0 +1,41 @@
+.book-details-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  max-width: 500px;
+  background-color: #fafafa;
+}
+
+.book-details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.book-details-table td {
+  padding: 4px 8px;
+}
+
+.book-details-edit label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.book-details-edit input, 
+.book-details-edit select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 4px;
+}
+
+.book-details-buttons button,
+.book-details-actions button {
+  margin-right: 8px;
+  margin-top: 10px;
+}
+
+.book-details-empty {
+  margin: 10px 0;
+  color: gray;
+  font-style: italic;
+}

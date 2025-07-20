@@ -1,0 +1,31 @@
+.book-directory {
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.book-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.book-list th, .book-list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.book-form input, .book-form textarea {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  width: 100%;
+}
+
+.book-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #eef;
+  border-radius: 4px;
+}
