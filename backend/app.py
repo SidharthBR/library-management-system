@@ -36,18 +36,26 @@ SessionLocal = sessionmaker(bind=engine)
 # --------------------
 # Auth
 # --------------------
+from flask import request, jsonify
+from flask_jwt_extended import create_access_token
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json()
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
 
+    print(f"Received: email={email}, password={password}")
+
     session = SessionLocal()
-    user = session.query(User).filter_by(username=username).first()
-    if user and check_password_hash(user.password_hash, password):
+    user = session.query(User).filter_by(email=email).first()
+    if user and user.password == password:
         token = create_access_token(identity=user.id)
-        return jsonify({"token": token, "username": username}), 200
+        return jsonify({"token": token, "username": user.username}), 200
+
+    print("User not found or password mismatch.")
     return jsonify({"msg": "Invalid credentials"}), 401
+
 
 # --------------------
 # Admin dashboard
