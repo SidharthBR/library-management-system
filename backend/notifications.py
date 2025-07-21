@@ -1,11 +1,16 @@
 from smtplib import SMTP
 from email.mime.text import MIMEText
-from twilio.rest import Client
+from sqlalchemy.orm import Session
+from models import Notification
+from datetime import datetime
 import os
 
 def send_email(subject, recipient, body):
+    """
+    Sends an email to the specified recipient.
+    """
     smtp_server = os.getenv('SMTP_SERVER')
-    smtp_port = os.getenv('SMTP_PORT')
+    smtp_port = int(os.getenv('SMTP_PORT', '587'))
     smtp_user = os.getenv('SMTP_USER')
     smtp_password = os.getenv('SMTP_PASSWORD')
 
@@ -19,22 +24,20 @@ def send_email(subject, recipient, body):
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
 
-def send_sms(to, body):
-    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
-    from_number = os.getenv('TWILIO_PHONE_NUMBER')
 
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        body=body,
-        from_=from_number,
-        to=to
-    )
-
-    return message.sid
-
-def notify_user_via_email(user_email, subject, message):
+def notify_user_via_email(db: Session, user_id, user_email, subject, message):
+    """
+    Sends an email to the user and records the notification in the database.
+    """
+    # send email
     send_email(subject, user_email, message)
 
-def notify_user_via_sms(user_phone, message):
-    send_sms(user_phone, message)
+    # record in DB
+    notif = Notification(
+        user_id=user_id,
+        message=message,
+        sent_at=datetime.utcnow(),
+        channel='email'
+    )
+    db.add(notif)
+    db.commit()
